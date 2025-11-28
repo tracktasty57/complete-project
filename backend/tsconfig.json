@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    /* Basic Setup */
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "node",
+
+    /* Enable ES-style default imports like `import express from 'express'` */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    /* Output & Build Options */
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    /* Type Checking */
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "include": ["src"]
+}
