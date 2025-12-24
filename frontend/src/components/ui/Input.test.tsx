@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Input, Textarea } from './Input';
 
@@ -78,7 +78,7 @@ describe('Input Component', () => {
   it('renders with left icon', () => {
     const LeftIcon = () => <span data-testid="left-icon">@</span>;
     render(<Input leftIcon={<LeftIcon />} data-testid="input" />);
-    
+
     expect(screen.getByTestId('left-icon')).toBeInTheDocument();
     expect(screen.getByTestId('input')).toHaveClass('pl-10');
   });
@@ -86,7 +86,7 @@ describe('Input Component', () => {
   it('renders with right icon', () => {
     const RightIcon = () => <span data-testid="right-icon">✓</span>;
     render(<Input rightIcon={<RightIcon />} data-testid="input" />);
-    
+
     expect(screen.getByTestId('right-icon')).toBeInTheDocument();
     expect(screen.getByTestId('input')).toHaveClass('pr-10');
   });
@@ -95,7 +95,7 @@ describe('Input Component', () => {
     const LeftIcon = () => <span data-testid="left-icon">@</span>;
     const RightIcon = () => <span data-testid="right-icon">✓</span>;
     render(<Input leftIcon={<LeftIcon />} rightIcon={<RightIcon />} data-testid="input" />);
-    
+
     expect(screen.getByTestId('left-icon')).toBeInTheDocument();
     expect(screen.getByTestId('right-icon')).toBeInTheDocument();
     expect(screen.getByTestId('input')).toHaveClass('pl-10', 'pr-10');
@@ -105,7 +105,7 @@ describe('Input Component', () => {
     const user = userEvent.setup();
     render(<Input placeholder="Enter text" />);
     const input = screen.getByPlaceholderText('Enter text');
-    
+
     await user.type(input, 'Hello World');
     expect(input).toHaveValue('Hello World');
   });
@@ -113,10 +113,10 @@ describe('Input Component', () => {
   it('handles change events', async () => {
     const handleChange = vi.fn();
     const user = userEvent.setup();
-    
+
     render(<Input onChange={handleChange} placeholder="Enter text" />);
     const input = screen.getByPlaceholderText('Enter text');
-    
+
     await user.type(input, 'test');
     expect(handleChange).toHaveBeenCalled();
   });
@@ -124,7 +124,7 @@ describe('Input Component', () => {
   it('handles disabled state', () => {
     render(<Input disabled placeholder="Disabled input" />);
     const input = screen.getByPlaceholderText('Disabled input');
-    
+
     expect(input).toBeDisabled();
     expect(input).toHaveClass('disabled:opacity-50', 'disabled:cursor-not-allowed');
   });
@@ -154,7 +154,7 @@ describe('Input Component', () => {
   it('has proper accessibility attributes', () => {
     render(<Input label="Email" error="Invalid email" />);
     const input = screen.getByLabelText('Email');
-    
+
     expect(input).toHaveAttribute('aria-invalid', 'true');
     expect(input).toHaveAttribute('aria-describedby');
   });
@@ -166,7 +166,7 @@ describe('Input Component', () => {
         <Input label="Second Input" />
       </div>
     );
-    
+
     const inputs = screen.getAllByRole('textbox');
     expect(inputs[0].id).not.toBe(inputs[1].id);
   });
@@ -220,7 +220,7 @@ describe('Textarea Component', () => {
     const user = userEvent.setup();
     render(<Textarea placeholder="Enter message" />);
     const textarea = screen.getByPlaceholderText('Enter message');
-    
+
     await user.type(textarea, 'Hello World');
     expect(textarea).toHaveValue('Hello World');
   });
@@ -228,7 +228,7 @@ describe('Textarea Component', () => {
   it('handles disabled state', () => {
     render(<Textarea disabled placeholder="Disabled textarea" />);
     const textarea = screen.getByPlaceholderText('Disabled textarea');
-    
+
     expect(textarea).toBeDisabled();
     expect(textarea).toHaveClass('disabled:opacity-50', 'disabled:cursor-not-allowed');
   });
@@ -252,7 +252,7 @@ describe('Textarea Component', () => {
   it('has proper accessibility attributes', () => {
     render(<Textarea label="Message" error="Invalid message" />);
     const textarea = screen.getByLabelText('Message');
-    
+
     expect(textarea).toHaveAttribute('aria-invalid', 'true');
     expect(textarea).toHaveAttribute('aria-describedby');
   });

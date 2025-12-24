@@ -9,6 +9,7 @@ export interface IRecipe extends Document {
   servings: number;
   category: string;
   image: string;
+  likes: number;
   createdBy: mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
@@ -23,6 +24,7 @@ const RecipeSchema: Schema = new Schema({
   servings: { type: Number, required: true },
   category: { type: String, required: true },
   image: { type: String },
+  likes: { type: Number, default: 0 },
   createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 }, { timestamps: true });
 

@@ -11,4 +11,5 @@ export interface Recipe {
     rating?: number; // Optional as it wasn't in backend model yet, but used in UI
     createdAt: string;
     updatedAt: string;
+    createdBy?: string;
 }

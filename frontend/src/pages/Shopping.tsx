@@ -7,8 +7,14 @@ import {
   Edit3,
   Download,
   Share2,
-  Filter,
-  Search
+
+  Search,
+  Carrot,
+  Beef,
+  Milk,
+  Wheat,
+  Flame,
+  Package
 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardBody, Button, Input } from '../components/ui';
 import { getShoppingList, addItem as apiAddItem, updateItem, deleteItem as apiDeleteItem } from '../services/shoppingList.service';
@@ -46,13 +52,13 @@ export const Shopping: React.FC = () => {
   };
 
   const categories = [
-    { id: 'all', label: 'All Items', icon: '🛒' },
-    { id: 'vegetables', label: 'Vegetables', icon: '🥕' },
-    { id: 'meat', label: 'Meat & Fish', icon: '🍖' },
-    { id: 'dairy', label: 'Dairy', icon: '🥛' },
-    { id: 'grains', label: 'Grains & Rice', icon: '🌾' },
-    { id: 'spices', label: 'Spices', icon: '🌶️' },
-    { id: 'pantry', label: 'Pantry', icon: '🥫' }
+    { id: 'all', label: 'All Items', icon: ShoppingCart },
+    { id: 'vegetables', label: 'Vegetables', icon: Carrot },
+    { id: 'meat', label: 'Meat & Fish', icon: Beef },
+    { id: 'dairy', label: 'Dairy', icon: Milk },
+    { id: 'grains', label: 'Grains & Rice', icon: Wheat },
+    { id: 'spices', label: 'Spices', icon: Flame },
+    { id: 'pantry', label: 'Pantry', icon: Package }
   ];
 
   const addItem = async () => {
@@ -117,6 +123,68 @@ export const Shopping: React.FC = () => {
     } catch (error) {
       console.error('Error updating item:', error);
     }
+  };
+
+  const handleShareList = async () => {
+    const listText = filteredItems
+      .map((item, index) => `${index + 1}. ${item.completed ? '✓' : '☐'} ${item.name} - ${item.quantity}`)
+      .join('\n');
+
+    const shareText = `My Shopping List:\n\n${listText}\n\nTotal Items: ${filteredItems.length}\nCompleted: ${completedCount}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'My Shopping List',
+          text: shareText,
+        });
+      } catch (error) {
+        console.log('Error sharing:', error);
+        // Fallback to clipboard
+        copyToClipboard(shareText);
+      }
+    } else {
+      // Fallback to clipboard
+      copyToClipboard(shareText);
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Shopping list copied to clipboard!');
+    }).catch(err => {
+      console.error('Failed to copy:', err);
+    });
+  };
+
+  const handleExport = () => {
+    // Create CSV content
+    const headers = ['Item Name', 'Quantity', 'Category', 'Priority', 'Completed'];
+    const rows = filteredItems.map(item => [
+      item.name,
+      item.quantity,
+      item.category,
+      item.priority,
+      item.completed ? 'Yes' : 'No'
+    ]);
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n');
+
+    // Create blob and download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+
+    link.setAttribute('href', url);
+    link.setAttribute('download', `shopping-list-${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const filteredItems = shoppingItems.filter(item => {
@@ -224,19 +292,22 @@ export const Shopping: React.FC = () => {
       <section className="space-y-6">
         <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
           <div className="flex flex-wrap gap-2">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-2 rounded-xl font-medium transition-all duration-300 flex items-center space-x-2 ${selectedCategory === category.id
-                  ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-lg'
-                  : 'bg-white text-slate-700 border-2 border-slate-200 hover:border-orange-300'
-                  }`}
-              >
-                <span>{category.icon}</span>
-                <span>{category.label}</span>
-              </button>
-            ))}
+            {categories.map((category) => {
+              const Icon = category.icon;
+              return (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`px-4 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center space-x-3 group ${selectedCategory === category.id
+                    ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-xl scale-105'
+                    : 'bg-white text-slate-700 border border-slate-200 hover:border-orange-400 hover:bg-orange-50/30'
+                    }`}
+                >
+                  <Icon className={`h-5 w-5 ${selectedCategory === category.id ? 'text-white' : 'text-orange-500'} group-hover:scale-110 transition-transform`} />
+                  <span>{category.label}</span>
+                </button>
+              );
+            })}
           </div>
 
           <div className="flex space-x-3">
@@ -250,11 +321,11 @@ export const Shopping: React.FC = () => {
                 className="pl-10 w-64"
               />
             </div>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={handleShareList}>
               <Share2 className="h-4 w-4 mr-2" />
               Share List
             </Button>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={handleExport}>
               <Download className="h-4 w-4 mr-2" />
               Export
             </Button>
@@ -356,8 +427,9 @@ export const Shopping: React.FC = () => {
         )}
       </section>
 
+
       {/* Quick Actions */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <section className="max-w-2xl mx-auto">
         <Card variant="filled" className="animate-fade-in-up">
           <CardBody className="text-center space-y-4">
             <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center mx-auto">
@@ -369,25 +441,12 @@ export const Shopping: React.FC = () => {
                 Automatically add ingredients from your saved recipes
               </CardDescription>
             </div>
-            <Button variant="outline" className="w-full">
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => window.location.href = '/recipes'}
+            >
               Browse Recipes
-            </Button>
-          </CardBody>
-        </Card>
-
-        <Card variant="filled" className="animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-          <CardBody className="text-center space-y-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center mx-auto">
-              <Filter className="h-6 w-6 text-white" />
-            </div>
-            <div>
-              <CardTitle>Smart Suggestions</CardTitle>
-              <CardDescription>
-                Get personalized shopping suggestions based on your cooking habits
-              </CardDescription>
-            </div>
-            <Button variant="outline" className="w-full">
-              View Suggestions
             </Button>
           </CardBody>
         </Card>

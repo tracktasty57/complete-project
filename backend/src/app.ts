@@ -6,6 +6,7 @@ import authRoutes from "./routes/auth";
 import recipeRoutes from "./routes/recipe.routes";
 import mealPlanRoutes from "./routes/mealPlan.routes";
 import shoppingListRoutes from "./routes/shoppingList.routes";
+import userRoutes from "./routes/user";
 import errorMiddleware from "./middleware/error.middleware";
 
 dotenv.config();
@@ -13,12 +14,14 @@ dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 
 // ✅ Add this line to mount the routes
 app.use("/api/auth", authRoutes);
 app.use("/api/recipes", recipeRoutes);
 app.use("/api/meal-plans", mealPlanRoutes);
 app.use("/api/shopping-list", shoppingListRoutes);
+app.use("/api/users", userRoutes);
 
 app.use(errorMiddleware);
 

@@ -12,7 +12,9 @@ import {
   About,
   Contact,
   Login,
-  Register
+  Register,
+  RecipeDetail,
+  AddRecipe
 } from './pages'
 import './App.css'
 
@@ -102,6 +104,70 @@ function App() {
             >
               <Recipes />
             </Layout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/recipes/:id"
+        element={
+          <ProtectedRoute>
+            <Layout
+              title="Recipe Details - Recipe Finder"
+              headerProps={{
+                brandText: "Recipe Finder",
+                showAuthLinks: true,
+                isAuthenticated: true
+              }}
+            >
+              <RecipeDetail />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/add-recipe"
+        element={
+          <ProtectedRoute>
+            <Layout
+              title="Add New Recipe - Recipe Finder"
+              headerProps={{
+                brandText: "Recipe Finder",
+                showAuthLinks: true,
+                isAuthenticated: true
+              }}
+            >
+              <AddRecipe />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/edit-recipe/:id"
+        element={
+          <ProtectedRoute>
+            <Layout
+              title="Edit Recipe - Recipe Finder"
+              headerProps={{
+                brandText: "Recipe Finder",
+                showAuthLinks: true,
+                isAuthenticated: true
+              }}
+            >
+              <AddRecipe />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Fallback for edit-recipe without ID */}
+      <Route
+        path="/edit-recipe"
+        element={
+          <ProtectedRoute>
+            <Layout title="Recipe Finder"><NotFound /></Layout>
           </ProtectedRoute>
         }
       />

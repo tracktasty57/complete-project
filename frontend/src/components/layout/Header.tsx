@@ -78,11 +78,10 @@ export const Header: React.FC<HeaderProps> = ({
       return (
         <button
           onClick={handleLogout} // ✅ updated
-          className={`${
-            isMobile
+          className={`${isMobile
               ? 'flex items-center space-x-3 px-6 py-4 text-base font-medium text-red-600 hover:bg-red-50/80 rounded-xl transition-all duration-300 group'
               : 'px-4 py-2 text-sm font-semibold text-red-600 hover:text-red-700 hover:bg-red-50/50 rounded-xl transition-all duration-300 group'
-          }`}
+            }`}
         >
           <span className="group-hover:translate-x-1 transition-transform duration-300">Logout</span>
         </button>
@@ -105,9 +104,11 @@ export const Header: React.FC<HeaderProps> = ({
               {brandImageUrl ? (
                 <img src={brandImageUrl} alt={brandText} className="h-10 w-10 object-contain group-hover:scale-110 transition-transform duration-300" />
               ) : (
-                <div className="h-12 w-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
-                  <span className="text-white font-bold text-lg">RF</span>
-                </div>
+                <img
+                  src="/favicon.png"
+                  alt="Logo"
+                  className="h-12 w-12 object-contain rounded-xl shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300"
+                />
               )}
               <span className="hidden sm:block bg-gradient-to-r from-orange-600 to-red-500 bg-clip-text text-transparent">
                 {brandText}

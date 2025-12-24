@@ -103,18 +103,6 @@ export const FOOTER_NAVIGATION_ITEMS: NavigationItem[] = [
     requiresAuth: false,
   },
   {
-    id: "footer-tutorials",
-    label: "Tutorials",
-    path: "/tutorials",
-    requiresAuth: false,
-  },
-  {
-    id: "footer-seasonal",
-    label: "Seasonal",
-    path: "/seasonal",
-    requiresAuth: false,
-  },
-  {
     id: "footer-about",
     label: "About",
     path: "/about",

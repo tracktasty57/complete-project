@@ -1,17 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  Code, 
-  Palette, 
-  Smartphone, 
-  Globe, 
-  Zap, 
+import {
+  Code,
+  Palette,
+  Smartphone,
+  Globe,
+  Zap,
   Shield,
   ArrowRight,
   Check,
   Star
 } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardDescription, CardBody, Button } from '../components/ui';
+import { Card, CardTitle, CardDescription, CardBody, Button } from '../components/ui';
 
 /**
  * Services page component with service cards and descriptions
@@ -164,7 +164,7 @@ export const Services: React.FC = () => {
             From concept to deployment, we handle every aspect of your digital project with expertise and care.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {services.map((service) => {
             const Icon = service.icon;
@@ -175,7 +175,7 @@ export const Services: React.FC = () => {
                   <div className={`h-48 ${service.color} flex items-center justify-center`}>
                     <Icon className="h-16 w-16 text-white" />
                   </div>
-                  
+
                   {/* Service Content */}
                   <CardBody className="space-y-6">
                     <div className="space-y-3">
@@ -184,7 +184,7 @@ export const Services: React.FC = () => {
                         {service.description}
                       </CardDescription>
                     </div>
-                    
+
                     {/* Features List */}
                     <div className="space-y-3">
                       <h4 className="font-semibold text-slate-900">Key Features:</h4>
@@ -197,7 +197,7 @@ export const Services: React.FC = () => {
                         ))}
                       </ul>
                     </div>
-                    
+
                     {/* Pricing and CTA */}
                     <div className="flex items-center justify-between pt-4 border-t border-slate-200">
                       <div>
@@ -228,7 +228,7 @@ export const Services: React.FC = () => {
             We follow a proven methodology to ensure your project is delivered on time and exceeds expectations.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {[
             { step: '01', title: 'Discovery', description: 'We understand your needs and goals' },
@@ -257,7 +257,7 @@ export const Services: React.FC = () => {
             Don't just take our word for it. Here's what our satisfied clients have to say about our services.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
             <Card key={index} variant="elevated">

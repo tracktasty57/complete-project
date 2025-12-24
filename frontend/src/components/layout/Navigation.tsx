@@ -61,7 +61,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   };
 
   // Render individual navigation item
-  const renderNavigationItem = (item: NavigationItem, index: number, isFirstMainItem = false) => {
+  const renderNavigationItem = (item: NavigationItem, isFirstMainItem = false) => {
     const Icon = item.icon;
     const isActive = isActivePath(item.path);
 
@@ -108,7 +108,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   const renderChildItems = (children: NavigationItem[]) => {
     return (
       <div className={`${isMobile ? 'ml-6 mt-2 space-y-1' : 'ml-4 mt-1 space-y-1'}`}>
-        {children.map((child, index) => renderNavigationItem(child, index, false))}
+        {children.map((child) => renderNavigationItem(child, false))}
       </div>
     );
   };
@@ -126,7 +126,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         <div className="px-2 pt-2 pb-3 space-y-1">
           {items.slice(0, NAVIGATION_CONFIG.MAX_MOBILE_ITEMS).map((item, index) => (
             <div key={item.id}>
-              {renderNavigationItem(item, index, index === 0)}
+              {renderNavigationItem(item, index === 0)}
               {item.children && item.children.length > 0 && renderChildItems(item.children)}
             </div>
           ))}
@@ -145,7 +145,7 @@ export const Navigation: React.FC<NavigationProps> = ({
     >
       {items.map((item, index) => (
         <div key={item.id} className="relative">
-          {renderNavigationItem(item, index, index === 0)}
+          {renderNavigationItem(item, index === 0)}
           {item.children && item.children.length > 0 && (
             <div className="absolute top-full left-0 mt-1 w-48 bg-white rounded-md shadow-lg border border-slate-200 py-1 z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
               {renderChildItems(item.children)}

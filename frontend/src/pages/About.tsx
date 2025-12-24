@@ -1,22 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  MapPin, 
-  Mail, 
-  Phone, 
+import {
+  MapPin,
+  Mail,
+  Phone,
   Calendar,
   ChefHat,
   Users,
   Utensils,
-  Heart,
   Target,
   Lightbulb,
   Shield,
-  BookOpen,
   Clock,
   Star
 } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardDescription, CardBody, Button } from '../components/ui';
+import { Card, CardTitle, CardDescription, CardBody, Button } from '../components/ui';
 
 /**
  * About page component for Recipe Finder application
@@ -27,24 +25,24 @@ export const About: React.FC = () => {
       name: 'Recipe Discovery',
       role: 'Smart Recipe Suggestions',
       avatar: '/api/placeholder/150/150',
-      bio: 'Find perfect recipes based on ingredients you have at home. Our intelligent system suggests meals that match your pantry.',
-      skills: ['Smart Search', 'Ingredient Matching', 'Dietary Filters', 'Cuisine Types'],
+      bio: 'Browse and discover amazing recipes from around the world. Create your own recipes and save your favorites for quick access.',
+      skills: ['Recipe Browsing', 'Create Recipes', 'Save Favorites', 'Search & Filter'],
       icon: ChefHat
     },
     {
-      name: 'Kitchen Management',
-      role: 'Inventory Tracking',
+      name: 'Shopping Lists',
+      role: 'Smart Grocery Management',
       avatar: '/api/placeholder/150/150',
-      bio: 'Keep track of your kitchen ingredients, expiry dates, and shopping needs all in one convenient place.',
-      skills: ['Inventory Tracking', 'Expiry Alerts', 'Shopping Lists', 'Meal Planning'],
+      bio: 'Create and manage shopping lists with ease. Share lists with family, export to CSV, and never forget an ingredient again.',
+      skills: ['List Management', 'Share Lists', 'Export to CSV', 'Item Tracking'],
       icon: Utensils
     },
     {
       name: 'Meal Planning',
       role: 'Weekly Organization',
       avatar: '/api/placeholder/150/150',
-      bio: 'Plan your meals for the week, generate shopping lists automatically, and never wonder "what\'s for dinner?" again.',
-      skills: ['Weekly Planning', 'Auto Shopping Lists', 'Nutrition Tracking', 'Calendar Integration'],
+      bio: 'Plan your meals for the week ahead. Organize breakfast, lunch, and dinner, and share your meal plans with others.',
+      skills: ['Weekly Planning', 'Meal Scheduling', 'Share Plans', 'Export Plans'],
       icon: Calendar
     }
   ];
@@ -73,9 +71,9 @@ export const About: React.FC = () => {
   ];
 
   const stats = [
-    { number: '1000+', label: 'Delicious Recipes' },
-    { number: '500+', label: 'Happy Cooks' },
-    { number: '50+', label: 'Cuisine Types' },
+    { number: '100+', label: 'Delicious Recipes' },
+    { number: '50+', label: 'Active Users' },
+    { number: '20+', label: 'Cuisine Types' },
     { number: '24/7', label: 'Recipe Access' }
   ];
 
@@ -91,7 +89,7 @@ export const About: React.FC = () => {
             </span>
           </h1>
           <p className="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-            Your ultimate culinary companion that transforms the way you discover, plan, and prepare delicious meals. 
+            Your ultimate culinary companion that transforms the way you discover, plan, and prepare delicious meals.
             Making cooking accessible, enjoyable, and stress-free for everyone.
           </p>
         </div>
@@ -115,33 +113,35 @@ export const About: React.FC = () => {
           <h2 className="text-3xl font-bold text-slate-900">Our Mission</h2>
           <div className="space-y-4 text-slate-600 leading-relaxed">
             <p>
-              Recipe Finder was born from a simple idea: cooking should be enjoyable, not stressful. 
-              We noticed that many people struggle with meal planning, ingredient management, and finding 
-              recipes that match what they have at home.
+              Recipe Finder was born from a simple idea: cooking should be enjoyable, not stressful.
+              We created this platform to help home cooks discover new recipes, organize their meal planning,
+              and manage their shopping lists all in one convenient place.
             </p>
             <p>
-              Our application combines smart technology with culinary expertise to help you discover 
-              amazing recipes based on your available ingredients, manage your kitchen inventory, 
-              and plan meals that fit your lifestyle and dietary preferences.
+              Our application combines modern web technology with intuitive design to help you browse
+              amazing recipes from around the world, create and save your own recipes, plan your weekly
+              meals, and generate shopping lists that you can share with family and friends.
             </p>
             <p>
-              Whether you're a beginner cook or a seasoned chef, Recipe Finder adapts to your needs, 
-              helping you reduce food waste, save time, and explore new flavors from around the world.
+              Whether you're a beginner cook or a seasoned chef, Recipe Finder adapts to your needs,
+              helping you stay organized, save time, and explore new flavors. Built as a university
+              project at the University of Gujrat, Pakistan, with passion for both technology and food.
             </p>
           </div>
-          <Button size="lg" className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600">
-            <Link to="/recipes">
+          <Link to="/recipes">
+            <Button size="lg" className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600">
               Start Cooking
-            </Link>
-          </Button>
+            </Button>
+          </Link>
         </div>
-        
+
         <div className="relative">
-          <div className="bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl h-96 flex items-center justify-center">
-            <div className="text-center text-white space-y-4">
-              <ChefHat className="h-16 w-16 mx-auto" />
-              <p className="text-xl font-semibold">Cooking Made Simple</p>
-            </div>
+          <div className="bg-gradient-to-br from-orange-100 to-red-100 rounded-2xl overflow-hidden shadow-2xl">
+            <img
+              src="/recipe_finder_hero.png"
+              alt="Recipe Finder Application"
+              className="w-full h-96 object-cover"
+            />
           </div>
         </div>
       </section>
@@ -154,7 +154,7 @@ export const About: React.FC = () => {
             These core principles guide our approach to making cooking accessible and enjoyable for everyone.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {values.map((value, index) => {
             const Icon = value.icon;
@@ -181,7 +181,7 @@ export const About: React.FC = () => {
             Discover the powerful features that make Recipe Finder your perfect kitchen companion.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {features.map((feature, index) => {
             const Icon = feature.icon;
@@ -192,20 +192,20 @@ export const About: React.FC = () => {
                   <div className="mx-auto w-20 h-20 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center">
                     <Icon className="h-10 w-10 text-white" />
                   </div>
-                  
+
                   {/* Feature Info */}
                   <div className="space-y-2">
                     <CardTitle className="text-xl">{feature.name}</CardTitle>
                     <p className="text-orange-600 font-medium">{feature.role}</p>
                     <CardDescription>{feature.bio}</CardDescription>
                   </div>
-                  
+
                   {/* Feature Capabilities */}
                   <div className="space-y-3">
                     <h4 className="font-semibold text-slate-900">Capabilities:</h4>
                     <div className="flex flex-wrap gap-2 justify-center">
                       {feature.skills.map((skill, skillIndex) => (
-                        <span 
+                        <span
                           key={skillIndex}
                           className="px-3 py-1 bg-orange-100 text-orange-700 text-sm rounded-full"
                         >
@@ -229,12 +229,12 @@ export const About: React.FC = () => {
             Have questions about Recipe Finder? We'd love to hear from you and help with your culinary journey.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Information */}
           <div className="space-y-6">
             <h3 className="text-xl font-semibold text-slate-900">Contact Information</h3>
-            
+
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
                 <MapPin className="h-5 w-5 text-orange-600" />
@@ -244,7 +244,7 @@ export const About: React.FC = () => {
                   <p className="text-slate-600">Gujrat, Punjab, Pakistan</p>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-orange-600" />
                 <div>
@@ -252,7 +252,7 @@ export const About: React.FC = () => {
                   <p className="text-slate-600">+92 300 1234567</p>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-orange-600" />
                 <div>
@@ -260,7 +260,7 @@ export const About: React.FC = () => {
                   <p className="text-slate-600">tracktasty57@gmail.com</p>
                 </div>
               </div>
-              
+
               <div className="flex items-center space-x-3">
                 <Clock className="h-5 w-5 text-orange-600" />
                 <div>
@@ -271,12 +271,12 @@ export const About: React.FC = () => {
               </div>
             </div>
           </div>
-          
+
           {/* Recipe Showcase */}
           <div className="bg-gradient-to-br from-orange-100 to-red-100 rounded-lg h-64 lg:h-full flex items-center justify-center">
             <div className="text-center text-orange-700 space-y-4">
               <ChefHat className="h-16 w-16 mx-auto" />
-              <p className="font-bold text-xl">1000+ Recipes</p>
+              <p className="font-bold text-xl">100+ Recipes</p>
               <p className="text-sm">From around the world</p>
               <div className="flex justify-center space-x-2 mt-4">
                 <Star className="h-5 w-5 text-yellow-500 fill-current" />
@@ -300,16 +300,16 @@ export const About: React.FC = () => {
             Join thousands of home cooks who have transformed their kitchen experience with Recipe Finder.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="secondary" size="lg">
-              <Link to="/recipes">
+            <Link to="/recipes">
+              <Button variant="secondary" size="lg">
                 Discover Recipes
-              </Link>
-            </Button>
-            <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-orange-600">
-              <Link to="/dashboard">
+              </Button>
+            </Link>
+            <Link to="/dashboard">
+              <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-orange-600">
                 Get Started
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

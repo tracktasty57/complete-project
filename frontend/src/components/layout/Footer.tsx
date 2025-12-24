@@ -59,7 +59,7 @@ export const Footer: React.FC<FooterProps> = ({
                 </h3>
               </div>
               <p className="text-slate-400 mb-6 max-w-md text-base leading-relaxed">
-                Your complete culinary companion for discovering recipes, managing ingredients, and planning delicious meals.
+                Your complete culinary companion for discovering recipes, planning meals, and managing shopping lists.
                 Developed at University of Gujrat, Pakistan with modern technology for the best cooking experience.
               </p>
 
@@ -150,20 +150,11 @@ export const Footer: React.FC<FooterProps> = ({
                 </li>
                 <li>
                   <Link
-                    to="/recipes"
+                    to="/about"
                     className="text-slate-400 hover:text-green-400 transition-all duration-300 text-base font-medium hover:translate-x-2 inline-flex items-center space-x-2 group"
                   >
                     <BookOpen className="h-4 w-4 group-hover:text-green-400 transition-colors" />
-                    <span>Cooking Guides</span>
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/privacy"
-                    className="text-slate-400 hover:text-green-400 transition-all duration-300 text-base font-medium hover:translate-x-2 inline-flex items-center space-x-2 group"
-                  >
-                    <BookOpen className="h-4 w-4 group-hover:text-green-400 transition-colors" />
-                    <span>Privacy Policy</span>
+                    <span>About Us</span>
                   </Link>
                 </li>
               </ul>

@@ -158,6 +158,94 @@ export const MealPlanner: React.FC = () => {
     }).length;
   };
 
+  const handleShareMealPlan = async () => {
+    let planText = `My Meal Plan\nWeek of ${formatDate(weekDates[0])} - ${formatDate(weekDates[6])}\n\n`;
+
+    daysOfWeek.forEach((day, index) => {
+      const dayMeals = meals[day.key as keyof typeof meals];
+      planText += `${day.label} (${formatDate(weekDates[index])})\n`;
+
+      mealTypes.forEach(mealType => {
+        const meal = dayMeals?.[mealType.key];
+        if (meal && meal.name) {
+          planText += `  ${mealType.icon} ${mealType.label}: ${meal.name}`;
+          if (meal.time) planText += ` at ${meal.time}`;
+          if (meal.servings) planText += ` (${meal.servings} servings)`;
+          planText += '\n';
+        }
+      });
+      planText += '\n';
+    });
+
+    planText += `\nTotal Meals Planned: ${getTotalMealsForWeek()}`;
+
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'My Meal Plan',
+          text: planText,
+        });
+      } catch (error) {
+        console.log('Error sharing:', error);
+        copyToClipboard(planText);
+      }
+    } else {
+      copyToClipboard(planText);
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Meal plan copied to clipboard!');
+    }).catch(err => {
+      console.error('Failed to copy:', err);
+    });
+  };
+
+  const handleExportMealPlan = () => {
+    // Create CSV content
+    const headers = ['Day', 'Date', 'Meal Type', 'Meal Name', 'Time', 'Servings'];
+    const rows: string[][] = [];
+
+    daysOfWeek.forEach((day, index) => {
+      const dayMeals = meals[day.key as keyof typeof meals];
+      const dateStr = formatDate(weekDates[index]);
+
+      mealTypes.forEach(mealType => {
+        const meal = dayMeals?.[mealType.key];
+        if (meal && meal.name) {
+          rows.push([
+            day.label,
+            dateStr,
+            mealType.label,
+            meal.name || '',
+            meal.time || '',
+            meal.servings?.toString() || ''
+          ]);
+        }
+      });
+    });
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n');
+
+    // Create blob and download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+
+    const weekStart = formatDate(weekDates[0]).replace(/\s/g, '-');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `meal-plan-${weekStart}.csv`);
+    link.style.visibility = 'hidden';
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="space-y-12">
       {/* Header */}
@@ -236,11 +324,11 @@ export const MealPlanner: React.FC = () => {
                   Next
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={handleExportMealPlan}>
                   <Download className="h-4 w-4 mr-2" />
                   Export
                 </Button>
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={handleShareMealPlan}>
                   <Share2 className="h-4 w-4 mr-2" />
                   Share
                 </Button>
@@ -368,7 +456,11 @@ export const MealPlanner: React.FC = () => {
                 Find new recipes to add to your meal plan
               </CardDescription>
             </div>
-            <Button variant="outline" className="w-full">
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => window.location.href = '/recipes'}
+            >
               View Recipes
             </Button>
           </CardBody>
@@ -385,7 +477,11 @@ export const MealPlanner: React.FC = () => {
                 Let us create a balanced meal plan for you
               </CardDescription>
             </div>
-            <Button variant="outline" className="w-full">
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => alert('Auto-generate feature coming soon! For now, you can manually add meals by clicking the + button on each meal slot.')}
+            >
               Generate Plan
             </Button>
           </CardBody>
@@ -402,7 +498,11 @@ export const MealPlanner: React.FC = () => {
                 Generate shopping list from your meal plan
               </CardDescription>
             </div>
-            <Button variant="outline" className="w-full">
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => window.location.href = '/shopping'}
+            >
               Create List
             </Button>
           </CardBody>

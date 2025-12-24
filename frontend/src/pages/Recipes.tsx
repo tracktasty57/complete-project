@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Search,
   Filter,
@@ -12,19 +13,76 @@ import {
 } from 'lucide-react';
 import { Card, CardTitle, CardDescription, CardBody, Button, Input } from '../components/ui';
 import { getRecipes } from '../services/recipe.service';
+import { getUserProfile, toggleFavorite, toggleLike } from '../services/user.service';
 import type { Recipe } from '../types/recipe';
 
 /**
  * Recipes page component for discovering and browsing recipes
  */
 export const Recipes: React.FC = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
+  const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [likedRecipes, setLikedRecipes] = useState<Set<string>>(new Set());
+
+  // Fetch user profile on mount to get likes/favorites
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const profile = await getUserProfile();
+        setFavorites(new Set(profile.favorites));
+        setLikedRecipes(new Set(profile.likedRecipes));
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+    fetchUserData();
+  }, []);
+
+  const handleToggleLike = async (e: React.MouseEvent, recipeId: string) => {
+    e.stopPropagation();
+    const isLiked = likedRecipes.has(recipeId);
+
+    // Optimistic update
+    const newLiked = new Set(likedRecipes);
+    if (isLiked) newLiked.delete(recipeId);
+    else newLiked.add(recipeId);
+    setLikedRecipes(newLiked);
+
+    try {
+      await toggleLike(recipeId);
+    } catch (error) {
+      // Revert on error
+      console.error('Error toggling like:', error);
+      setLikedRecipes(likedRecipes);
+    }
+  };
+
+  const handleToggleFavorite = async (e: React.MouseEvent, recipeId: string) => {
+    e.stopPropagation();
+    const isFav = favorites.has(recipeId);
+
+    // Optimistic update
+    const newFavs = new Set(favorites);
+    if (isFav) newFavs.delete(recipeId);
+    else newFavs.add(recipeId);
+    setFavorites(newFavs);
+
+    try {
+      await toggleFavorite(recipeId);
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+      setFavorites(favorites);
+    }
+  };
 
   const categories = [
     { id: 'all', label: 'All Recipes', count: 1000 },
+    { id: 'favorites', label: 'My Favorites', count: favorites.size },
+    { id: 'liked_recipes', label: 'Liked Recipes', count: likedRecipes.size },
     { id: 'breakfast', label: 'Breakfast', count: 150 },
     { id: 'lunch', label: 'Lunch', count: 300 },
     { id: 'dinner', label: 'Dinner', count: 400 },
@@ -36,7 +94,25 @@ export const Recipes: React.FC = () => {
     const fetchRecipes = async () => {
       try {
         setLoading(true);
-        const data = await getRecipes(selectedCategory, searchQuery);
+        let idsToFetch: string[] | undefined;
+
+        if (selectedCategory === 'favorites') {
+          idsToFetch = Array.from(favorites);
+          if (idsToFetch.length === 0) {
+            setRecipes([]);
+            setLoading(false);
+            return;
+          }
+        } else if (selectedCategory === 'liked_recipes') {
+          idsToFetch = Array.from(likedRecipes);
+          if (idsToFetch.length === 0) {
+            setRecipes([]);
+            setLoading(false);
+            return;
+          }
+        }
+
+        const data = await getRecipes(selectedCategory, searchQuery, idsToFetch);
         setRecipes(data);
       } catch (error) {
         console.error('Error fetching recipes:', error);
@@ -50,7 +126,7 @@ export const Recipes: React.FC = () => {
     }, 500);
 
     return () => clearTimeout(debounce);
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory, searchQuery, favorites, likedRecipes]);
 
   const filteredRecipes = recipes;
 
@@ -150,17 +226,31 @@ export const Recipes: React.FC = () => {
               >
                 {/* Recipe Image */}
                 <div className="relative h-48 bg-gradient-to-br from-orange-200 to-red-200 overflow-hidden">
+                  {recipe.image ? (
+                    <img
+                      src={recipe.image}
+                      alt={recipe.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <ChefHat className="h-16 w-16 text-orange-500 opacity-50" />
+                    </div>
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                   <div className="absolute top-4 right-4 flex space-x-2">
-                    <button className="p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-colors">
-                      <Heart className="h-4 w-4 text-slate-600 hover:text-red-500" />
+                    <button
+                      className="p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-colors"
+                      onClick={(e) => handleToggleLike(e, recipe._id)}
+                    >
+                      <Heart className={`h-4 w-4 transition-colors ${likedRecipes.has(recipe._id) ? 'text-red-500 fill-red-500' : 'text-slate-600 hover:text-red-500'}`} />
                     </button>
-                    <button className="p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-colors">
-                      <Bookmark className="h-4 w-4 text-slate-600 hover:text-orange-500" />
+                    <button
+                      className="p-2 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-colors"
+                      onClick={(e) => handleToggleFavorite(e, recipe._id)}
+                    >
+                      <Bookmark className={`h-4 w-4 transition-colors ${favorites.has(recipe._id) ? 'text-orange-500 fill-orange-500' : 'text-slate-600 hover:text-orange-500'}`} />
                     </button>
-                  </div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <ChefHat className="h-16 w-16 text-orange-500 opacity-50" />
                   </div>
                 </div>
 
@@ -216,6 +306,7 @@ export const Recipes: React.FC = () => {
                     variant="outline"
                     size="sm"
                     className="w-full group-hover:border-orange-400 group-hover:text-orange-600"
+                    onClick={() => navigate(`/recipes/${recipe._id}`)}
                   >
                     View Recipe
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
