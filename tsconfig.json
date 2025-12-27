@@ -33,7 +33,7 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     ".next/types/**/*.ts",
-    "api-bridge/**/*.ts",
+    "src/pages/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
