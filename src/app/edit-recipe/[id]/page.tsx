@@ -29,7 +29,7 @@ interface EditRecipeForm {
 
 export default function EditRecipePage() {
     const params = useParams();
-    const id = params.id as string;
+    const id = params?.id as string;
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(false);
