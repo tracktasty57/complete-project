@@ -20,7 +20,7 @@ import type { Recipe } from '@/types/recipe';
 
 export default function RecipeDetailPage() {
     const params = useParams();
-    const id = params.id as string;
+    const id = params?.id as string;
     const router = useRouter();
     const [recipe, setRecipe] = useState<Recipe | null>(null);
     const [loading, setLoading] = useState(true);
