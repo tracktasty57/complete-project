@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, type ReactNode } from 'react';
 import { cn } from '../../utils/helpers';
 
 /**
@@ -26,7 +26,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Additional CSS classes */
   className?: string;
   /** Card content */
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 /**
@@ -36,7 +36,7 @@ export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Additional CSS classes */
   className?: string;
   /** Header content */
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 /**
@@ -46,7 +46,7 @@ export interface CardBodyProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Additional CSS classes */
   className?: string;
   /** Body content */
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 /**
@@ -56,7 +56,7 @@ export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Additional CSS classes */
   className?: string;
   /** Footer content */
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 /**
@@ -105,13 +105,13 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     const baseStyles = 'rounded-2xl transition-all duration-500 ease-out relative overflow-hidden';
     const variantStyles = getVariantStyles(variant);
     const paddingStyles = getPaddingStyles(padding);
-    
-    const hoverStyles = hoverable || clickable 
-      ? 'hover:shadow-2xl hover:shadow-orange-500/25 hover:-translate-y-2 hover:scale-105' 
+
+    const hoverStyles = hoverable || clickable
+      ? 'hover:shadow-2xl hover:shadow-orange-500/25 hover:-translate-y-2 hover:scale-105'
       : '';
-    
-    const clickableStyles = clickable 
-      ? 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:ring-offset-2 active:scale-95' 
+
+    const clickableStyles = clickable
+      ? 'cursor-pointer focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:ring-offset-2 active:scale-95'
       : '';
 
     return (
@@ -165,7 +165,7 @@ export interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement>
   /** Additional CSS classes */
   className?: string;
   /** Title content */
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 export const CardTitle = forwardRef<HTMLHeadingElement, CardTitleProps>(
@@ -191,7 +191,7 @@ export interface CardDescriptionProps extends React.HTMLAttributes<HTMLParagraph
   /** Additional CSS classes */
   className?: string;
   /** Description content */
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 export const CardDescription = forwardRef<HTMLParagraphElement, CardDescriptionProps>(

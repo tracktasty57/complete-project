@@ -1,4 +1,4 @@
-import type { ComponentType } from 'react';
+import type { ComponentType, ReactNode } from 'react';
 
 /**
  * Represents a single navigation item in the application
@@ -41,7 +41,7 @@ export interface NavigationProps {
  */
 export interface LayoutProps {
   /** Child components to render */
-  children: React.ReactNode;
+  children: ReactNode;
   /** Optional page title */
   title?: string;
   /** Optional page description */

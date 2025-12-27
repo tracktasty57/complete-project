@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, type ReactNode } from 'react';
 import { cn } from '../../utils/helpers';
 
 /**
@@ -35,9 +35,9 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   /** Whether the input is required */
   required?: boolean;
   /** Left icon element */
-  leftIcon?: React.ReactNode;
+  leftIcon?: ReactNode;
   /** Right icon element */
-  rightIcon?: React.ReactNode;
+  rightIcon?: ReactNode;
   /** Additional CSS classes */
   className?: string;
   /** Container CSS classes */
@@ -51,7 +51,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
  */
 const getVariantStyles = (variant: InputVariant, state: InputState): string => {
   const baseStyles = 'transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1';
-  
+
   const variants = {
     default: {
       default: 'bg-white border border-slate-300 focus:border-blue-500 focus:ring-blue-500',
@@ -128,21 +128,21 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     // Use error state if error prop is provided
     const currentState = error ? 'error' : state;
     const displayText = error || helperText;
-    
+
     // Generate unique ID if not provided
     const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
 
     const baseInputStyles = 'w-full rounded-md placeholder-slate-400 disabled:opacity-50 disabled:cursor-not-allowed';
     const variantStyles = getVariantStyles(variant, currentState);
     const sizeStyles = getSizeStyles(size);
-    
+
     // Adjust padding for icons
-    const iconPadding = leftIcon && rightIcon 
-      ? 'pl-10 pr-10' 
-      : leftIcon 
-        ? 'pl-10' 
-        : rightIcon 
-          ? 'pr-10' 
+    const iconPadding = leftIcon && rightIcon
+      ? 'pl-10 pr-10'
+      : leftIcon
+        ? 'pl-10'
+        : rightIcon
+          ? 'pr-10'
           : '';
 
     return (
@@ -159,7 +159,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             {required && <span className="text-red-500 ml-1">*</span>}
           </label>
         )}
-        
+
         <div className="relative">
           {leftIcon && (
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -168,7 +168,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               </span>
             </div>
           )}
-          
+
           <input
             ref={ref}
             id={inputId}
@@ -184,7 +184,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             aria-describedby={displayText ? `${inputId}-text` : undefined}
             {...props}
           />
-          
+
           {rightIcon && (
             <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
               <span className="text-slate-400">
@@ -193,7 +193,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             </div>
           )}
         </div>
-        
+
         {displayText && (
           <p
             id={`${inputId}-text`}
@@ -261,7 +261,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     // Use error state if error prop is provided
     const currentState = error ? 'error' : state;
     const displayText = error || helperText;
-    
+
     // Generate unique ID if not provided
     const textareaId = id || `textarea-${Math.random().toString(36).substr(2, 9)}`;
 
@@ -282,7 +282,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             {required && <span className="text-red-500 ml-1">*</span>}
           </label>
         )}
-        
+
         <textarea
           ref={ref}
           id={textareaId}
@@ -297,7 +297,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
           aria-describedby={displayText ? `${textareaId}-text` : undefined}
           {...props}
         />
-        
+
         {displayText && (
           <p
             id={`${textareaId}-text`}

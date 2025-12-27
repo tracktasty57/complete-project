@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, type ReactNode } from 'react';
 import { cn } from '../../utils/helpers';
 
 /**
@@ -24,13 +24,13 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   /** Whether the button is disabled */
   disabled?: boolean;
   /** Optional icon to display before text */
-  leftIcon?: React.ReactNode;
+  leftIcon?: ReactNode;
   /** Optional icon to display after text */
-  rightIcon?: React.ReactNode;
+  rightIcon?: ReactNode;
   /** Additional CSS classes */
   className?: string;
   /** Button content */
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
 /**
@@ -82,7 +82,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const isDisabled = disabled || loading;
 
     const baseStyles = 'inline-flex items-center justify-center rounded-xl font-medium transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none relative overflow-hidden';
-    
+
     const variantStyles = getVariantStyles(variant);
     const sizeStyles = getSizeStyles(size);
 
@@ -120,15 +120,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             />
           </svg>
         )}
-        
+
         {leftIcon && !loading && (
           <span className="mr-2 flex-shrink-0">
             {leftIcon}
           </span>
         )}
-        
+
         {children}
-        
+
         {rightIcon && (
           <span className="ml-2 flex-shrink-0">
             {rightIcon}
