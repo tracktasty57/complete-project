@@ -4,6 +4,7 @@ import Recipe from '../models/recipe';
 
 interface AuthRequest extends Request {
     user?: any;
+    file?: any;
 }
 
 export const getRecipes = async (req: Request, res: Response) => {
@@ -208,7 +209,7 @@ export const createRecipe = async (req: AuthRequest, res: Response) => {
     try {
         const recipeData = { ...req.body };
         if (req.file) {
-            recipeData.image = `http://localhost:5000/uploads/${req.file.filename}`;
+            recipeData.image = `/uploads/${req.file.filename}`;
         }
 
         // Ensure ingredients is an array
@@ -243,7 +244,7 @@ export const updateRecipe = async (req: AuthRequest, res: Response) => {
 
         const updateData = { ...req.body };
         if (req.file) {
-            updateData.image = `http://localhost:5000/uploads/${req.file.filename}`;
+            updateData.image = `/uploads/${req.file.filename}`;
         }
 
         // Ensure ingredients is an array
