@@ -16,6 +16,39 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
+// 🚀 Database Connection Utility for Serverless
+const connectDB = async () => {
+  if (mongoose.connection.readyState >= 1) return;
+
+  const mongoUri = process.env.MONGO_URI;
+  if (!mongoUri) {
+    throw new Error("MONGO_URI is missing from environment variables");
+  }
+
+  try {
+    await mongoose.connect(mongoUri, {
+      serverSelectionTimeoutMS: 5000, // Fail fast if can't connect
+    });
+    console.log("🟢 MongoDB connected");
+  } catch (err: any) {
+    console.error("🔴 MongoDB connection error:", err);
+    throw err;
+  }
+};
+
+// 🛰️ Middleware to ensure DB is connected before any request
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err: any) {
+    res.status(500).json({
+      message: "Database Connection Error",
+      details: err.message
+    });
+  }
+});
+
 // Add health check
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", message: "Backend is running" });
@@ -28,28 +61,15 @@ app.use("/api/meal-plans", mealPlanRoutes);
 app.use("/api/shopping-list", shoppingListRoutes);
 app.use("/api/users", userRoutes);
 
-app.use(errorMiddleware);
-
-const mongoUri = process.env.MONGO_URI;
-if (mongoUri) {
-  mongoose.connect(mongoUri)
-    .then(() => console.log("🟢 MongoDB connected"))
-    .catch((err) => {
-      console.error("🔴 MongoDB connection error:", err);
-      // Log the error more clearly for the user
-      process.env.MONGO_CONN_ERROR = err.message;
-    });
-} else {
-  console.warn("⚠️ MONGO_URI is missing. Backend may not work correctly.");
-}
-
-// Add a diagnostic route
+// Diagnostic route
 app.get("/api/diag", (req, res) => {
   res.json({
     status: mongoose.connection.readyState === 1 ? "Connected" : "Disconnected",
-    uri: process.env.MONGO_URI ? "Set (Hidden)" : "Not Set",
-    error: process.env.MONGO_CONN_ERROR || "None"
+    readyState: mongoose.connection.readyState,
+    uri: process.env.MONGO_URI ? "Set (Hidden)" : "Not Set"
   });
 });
+
+app.use(errorMiddleware);
 
 export default app;
