@@ -25,8 +25,13 @@ app.use("/api/users", userRoutes);
 
 app.use(errorMiddleware);
 
-mongoose.connect(process.env.MONGO_URI || "")
-  .then(() => console.log("🟢 MongoDB connected"))
-  .catch((err) => console.error("🔴 MongoDB connection error:", err));
+const mongoUri = process.env.MONGO_URI;
+if (mongoUri) {
+  mongoose.connect(mongoUri)
+    .then(() => console.log("🟢 MongoDB connected"))
+    .catch((err) => console.error("🔴 MongoDB connection error:", err));
+} else {
+  console.warn("⚠️ MONGO_URI is missing. Backend may not work correctly.");
+}
 
 export default app;
