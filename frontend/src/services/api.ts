@@ -1,5 +1,13 @@
 // src/services/api.ts
-const API_URL = import.meta.env.VITE_API_URL || "/api/auth";
+const getApiUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl && !envUrl.includes("your-backend-url")) {
+    return envUrl.endsWith("/auth") ? envUrl : `${envUrl}/auth`;
+  }
+  return "/api/auth";
+};
+
+const API_URL = getApiUrl();
 
 export interface RegisterData {
   name: string;

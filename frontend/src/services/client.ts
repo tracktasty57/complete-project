@@ -1,4 +1,12 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || "/api";
+const getBaseUrl = () => {
+    const envUrl = import.meta.env.VITE_API_URL;
+    if (envUrl && !envUrl.includes("your-backend-url")) {
+        return envUrl;
+    }
+    return "/api";
+};
+
+const API_BASE_URL = getBaseUrl();
 
 export const fetchWithAuth = async (endpoint: string, options: RequestInit = {}) => {
     const token = localStorage.getItem('token');
