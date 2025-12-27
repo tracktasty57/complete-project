@@ -16,6 +16,11 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
+// Add health check
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok", message: "Backend is running" });
+});
+
 // ✅ Add this line to mount the routes
 app.use("/api/auth", authRoutes);
 app.use("/api/recipes", recipeRoutes);
