@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { usePathname, useRouter } from 'next/navigation';
 import type { NavigationState, UseNavigationReturn } from '../types/navigation';
 import { isActivePath } from '../utils/helpers';
 
@@ -7,51 +7,52 @@ import { isActivePath } from '../utils/helpers';
  * Custom hook for navigation state management and utilities
  */
 export const useNavigation = (): UseNavigationReturn => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  
+  const pathname = usePathname();
+  const router = useRouter();
+
   const [state, setState] = useState<NavigationState>({
-    currentPath: location.pathname,
+    currentPath: pathname || '',
     isLoading: false,
-    history: [location.pathname],
+    history: [pathname || ''],
     isMobileMenuOpen: false
   });
 
   // Update current path when location changes
   useEffect(() => {
+    if (!pathname) return;
     setState(prev => ({
       ...prev,
-      currentPath: location.pathname,
-      history: prev.history.includes(location.pathname) 
-        ? prev.history 
-        : [...prev.history, location.pathname]
+      currentPath: pathname,
+      history: prev.history.includes(pathname)
+        ? prev.history
+        : [...prev.history, pathname]
     }));
-  }, [location.pathname]);
+  }, [pathname]);
 
   // Navigate to a specific path
   const navigateTo = useCallback((path: string) => {
     setState(prev => ({ ...prev, isLoading: true }));
-    
+
     // Simulate navigation loading (remove in production)
     setTimeout(() => {
-      navigate(path);
-      setState(prev => ({ 
-        ...prev, 
+      router.push(path);
+      setState(prev => ({
+        ...prev,
         isLoading: false,
         isMobileMenuOpen: false // Close mobile menu on navigation
       }));
     }, 100);
-  }, [navigate]);
+  }, [router]);
 
   // Go back in navigation history
   const goBack = useCallback(() => {
     setState(prev => ({ ...prev, isLoading: true }));
-    
+
     setTimeout(() => {
-      navigate(-1);
+      router.back();
       setState(prev => ({ ...prev, isLoading: false }));
     }, 100);
-  }, [navigate]);
+  }, [router]);
 
   // Toggle mobile menu
   const toggleMobileMenu = useCallback(() => {
