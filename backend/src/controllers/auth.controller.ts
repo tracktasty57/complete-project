@@ -44,9 +44,9 @@ export const registerUser = async (req: Request, res: Response) => {
         email: newUser.email,
       },
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Registration Error:", error);
-    res.status(500).json({ message: "Server Error" });
+    res.status(500).json({ message: error.message || "Server Error" });
   }
 };
 
