@@ -54,12 +54,17 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok", message: "Backend is running" });
 });
 
-// ✅ Add this line to mount the routes
-app.use("/api/auth", authRoutes);
-app.use("/api/recipes", recipeRoutes);
-app.use("/api/meal-plans", mealPlanRoutes);
-app.use("/api/shopping-list", shoppingListRoutes);
-app.use("/api/users", userRoutes);
+// ✅ Routes
+const mountRoutes = (base: string) => {
+  app.use(`${base}/auth`, authRoutes);
+  app.use(`${base}/recipes`, recipeRoutes);
+  app.use(`${base}/meal-plans`, mealPlanRoutes);
+  app.use(`${base}/shopping-list`, shoppingListRoutes);
+  app.use(`${base}/users`, userRoutes);
+};
+
+mountRoutes("/api");
+mountRoutes(""); // Fallback for when /api is stripped by a rewrite
 
 // Diagnostic route
 app.get("/api/diag", (req, res) => {
