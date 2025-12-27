@@ -66,7 +66,7 @@ export default function Login() {
             <div className="max-w-md w-full space-y-8">
                 <div className="text-center space-y-4 animate-fade-in">
                     <div className="mx-auto h-16 w-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center shadow-lg">
-                        <ChefHat className="h-8 w-8 text-white" />
+                        <ChefHat className="h-8 w-8 text-white" size={32} />
                     </div>
                     <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
                         Welcome Back
