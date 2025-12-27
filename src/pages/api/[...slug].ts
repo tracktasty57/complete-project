@@ -22,6 +22,9 @@ export const config = {
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    // Debug logging
+    console.log(`[API Bridge] Request Method: ${req.method}, URL: ${req.url}`);
+
     // Forward the request to the Express app
     await runMiddleware(req, res, app);
 }
