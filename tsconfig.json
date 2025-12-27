@@ -34,11 +34,11 @@
     "src/**/*.tsx",
     ".next/types/**/*.ts",
     "src/pages/**/*.ts",
+    "backend/src/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",
-    "legacy-react-app",
-    "backend"
+    "legacy-react-app"
   ]
 }

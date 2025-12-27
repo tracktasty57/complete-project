@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import app from '../../../../backend/src/app';
+import app from '../../../backend/src/app';
 
 // Helper to run middleware-like Express apps in Next.js
 // This basically wraps the Express 'app' so it can handle the Next.js req/res
