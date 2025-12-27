@@ -57,10 +57,12 @@ export const Navigation: React.FC<NavigationProps> = ({
 
   // Check if a path is currently active
   const isActivePath = (path: string): boolean => {
+    // Falls back to empty string if activePath is null
+    const current = activePath || '';
     if (path === '/') {
-      return activePath === '/';
+      return current === '/';
     }
-    return activePath.startsWith(path);
+    return current.startsWith(path);
   };
 
   // Render individual navigation item
