@@ -52,13 +52,6 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     requiresAuth: true,
   },
   {
-    id: "services",
-    label: "Services",
-    path: "/services",
-    icon: Settings,
-    requiresAuth: false,
-  },
-  {
     id: "about",
     label: "About",
     path: "/about",

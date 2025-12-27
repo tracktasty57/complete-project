@@ -2,31 +2,7 @@
     "version": 2,
     "rewrites": [
         {
-            "source": "/api/health",
-            "destination": "/api/index.ts"
-        },
-        {
-            "source": "/api/auth/(.*)",
-            "destination": "/api/index.ts"
-        },
-        {
-            "source": "/api/recipes/(.*)",
-            "destination": "/api/index.ts"
-        },
-        {
-            "source": "/api/meal-plans/(.*)",
-            "destination": "/api/index.ts"
-        },
-        {
-            "source": "/api/shopping-list/(.*)",
-            "destination": "/api/index.ts"
-        },
-        {
-            "source": "/api/users/(.*)",
-            "destination": "/api/index.ts"
-        },
-        {
-            "source": "/api/diag",
+            "source": "/api/(.*)",
             "destination": "/api/index.ts"
         }
     ]

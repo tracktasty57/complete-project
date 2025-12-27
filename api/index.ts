@@ -1,5 +1,11 @@
 import app from "../backend/src/app";
 
+// Debug incoming requests
+app.use((req, res, next) => {
+    console.log(`[Bridge] ${req.method} ${req.url}`);
+    next();
+});
+
 // Check environment variables at startup
 if (!process.env.MONGO_URI) {
     console.warn("⚠️ Warning: MONGO_URI is not set in environment variables!");

@@ -1,10 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
-    // This helps Next.js stay in the project root
-    experimental: {
-        // any experimental options if needed
-    }
+    async rewrites() {
+        return [
+            {
+                source: '/api/:path*',
+                destination: '/api/:path*', // This points to the Vercel functions directory
+            },
+        ];
+    },
 };
 
 module.exports = nextConfig;
