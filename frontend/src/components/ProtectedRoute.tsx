@@ -1,5 +1,7 @@
-import React, { useEffect } from "react";
-import { Navigate } from "react-router-dom";
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { isAuthenticated, removeToken } from "../utils/auth";
 
 interface ProtectedRouteProps {
@@ -7,19 +9,25 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const authenticated = isAuthenticated();
+  const router = useRouter();
+  const [isAuth, setIsAuth] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (!authenticated) {
-      removeToken(); // Cleanup expired or invalid token
+    const authStatus = isAuthenticated();
+    setIsAuth(authStatus);
+
+    if (!authStatus) {
+      removeToken();
+      router.push("/login");
     }
-  }, [authenticated]);
+  }, [router]);
 
-  // ✅ Optional: Use a loading state if token verification is async
-  // For now, your check is synchronous, so it's fine.
+  if (isAuth === null) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>; // Loading state
+  }
 
-  if (!authenticated) {
-    return <Navigate to="/login" replace />;
+  if (!isAuth) {
+    return null; // Navigation is handled in useEffect
   }
 
   return <>{children}</>;

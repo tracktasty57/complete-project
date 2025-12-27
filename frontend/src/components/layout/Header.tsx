@@ -1,9 +1,12 @@
+"use client";
+
 import React, { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { NAVIGATION_ITEMS, AUTH_NAVIGATION_ITEMS, NAVIGATION_LABELS } from '../../constants/navigation';
 import type { NavigationItem } from '../../types/navigation';
-import { removeToken } from '../../utils/auth'; // ✅ add this import
+import { removeToken } from '../../utils/auth';
 
 export interface HeaderProps {
   brandText?: string;
@@ -23,19 +26,18 @@ export const Header: React.FC<HeaderProps> = ({
   className = ''
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const location = useLocation();
-  const navigate = useNavigate(); // ✅ for redirect
+  const pathname = usePathname();
+  const router = useRouter();
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
-  const isActivePath = (path: string) => location.pathname === path;
+  const isActivePath = (path: string) => pathname === path;
 
-  // ✅ handle logout here
   const handleLogout = () => {
-    removeToken(); // clear JWT
+    removeToken();
     if (onLogout) onLogout();
-    navigate('/login'); // redirect to login
+    router.push('/login');
   };
 
   const renderNavigationItem = (item: NavigationItem, isMobile = false) => {
@@ -57,7 +59,7 @@ export const Header: React.FC<HeaderProps> = ({
     return (
       <Link
         key={item.id}
-        to={item.path}
+        href={item.path}
         onClick={isMobile ? closeMobileMenu : undefined}
         className={`${baseClasses} ${activeClasses}`}
         aria-current={isActive ? 'page' : undefined}
@@ -70,17 +72,16 @@ export const Header: React.FC<HeaderProps> = ({
     );
   };
 
-  // ✅ Updated logout handling
   const renderAuthLinks = (isMobile = false) => {
     if (!showAuthLinks) return null;
 
     if (isAuthenticated) {
       return (
         <button
-          onClick={handleLogout} // ✅ updated
+          onClick={handleLogout}
           className={`${isMobile
-              ? 'flex items-center space-x-3 px-6 py-4 text-base font-medium text-red-600 hover:bg-red-50/80 rounded-xl transition-all duration-300 group'
-              : 'px-4 py-2 text-sm font-semibold text-red-600 hover:text-red-700 hover:bg-red-50/50 rounded-xl transition-all duration-300 group'
+            ? 'flex items-center space-x-3 px-6 py-4 text-base font-medium text-red-600 hover:bg-red-50/80 rounded-xl transition-all duration-300 group'
+            : 'px-4 py-2 text-sm font-semibold text-red-600 hover:text-red-700 hover:bg-red-50/50 rounded-xl transition-all duration-300 group'
             }`}
         >
           <span className="group-hover:translate-x-1 transition-transform duration-300">Logout</span>
@@ -98,7 +99,7 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Brand */}
           <div className="flex items-center">
             <Link
-              to="/"
+              href="/"
               className="flex items-center space-x-3 text-2xl font-bold text-slate-900 hover:text-orange-600 transition-all duration-300 group"
             >
               {brandImageUrl ? (

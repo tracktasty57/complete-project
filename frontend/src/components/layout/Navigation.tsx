@@ -1,5 +1,8 @@
+"use client";
+
 import React, { useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import type { NavigationProps, NavigationItem } from '../../types/navigation';
 import { NAVIGATION_CONFIG, NAVIGATION_LABELS } from '../../constants/navigation';
 
@@ -14,12 +17,12 @@ export const Navigation: React.FC<NavigationProps> = ({
   isOpen = false,
   onToggle
 }) => {
-  const location = useLocation();
+  const pathname = usePathname();
   const navigationRef = useRef<HTMLElement>(null);
   const firstItemRef = useRef<HTMLAnchorElement>(null);
 
   // Update current path from router if not provided
-  const activePath = currentPath || location.pathname;
+  const activePath = currentPath || pathname;
 
   // Focus management for mobile menu
   useEffect(() => {
@@ -81,7 +84,7 @@ export const Navigation: React.FC<NavigationProps> = ({
       <Link
         key={item.id}
         ref={isFirstMainItem ? firstItemRef : undefined}
-        to={item.path}
+        href={item.path}
         onClick={() => handleNavigation(item.path)}
         onKeyDown={(e) => handleKeyDown(e, item)}
         className={`${baseClasses} ${activeClasses}`}

@@ -8,6 +8,7 @@ import {
   Mail,
   LogIn,
   UserPlus,
+  Settings,
 } from "lucide-react";
 import type { NavigationItem } from "../types/navigation";
 
@@ -49,6 +50,13 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     path: "/meal-planner",
     icon: Calendar,
     requiresAuth: true,
+  },
+  {
+    id: "services",
+    label: "Services",
+    path: "/services",
+    icon: Settings,
+    requiresAuth: false,
   },
   {
     id: "about",

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Heart, Mail, Phone, MapPin, BookOpen } from 'lucide-react';
 import { FOOTER_NAVIGATION_ITEMS, NAVIGATION_LABELS } from '../../constants/navigation';
 
@@ -7,19 +7,12 @@ import { FOOTER_NAVIGATION_ITEMS, NAVIGATION_LABELS } from '../../constants/navi
  * Props for the Footer component
  */
 export interface FooterProps {
-  /** Project name to display in footer */
   projectName?: string;
-  /** Copyright year */
   copyrightYear?: number;
-  /** Copyright holder name */
   copyrightHolder?: string;
-  /** Whether to show social media links */
   showSocialLinks?: boolean;
-  /** Whether to show navigation links */
   showNavigationLinks?: boolean;
-  /** Additional footer content */
   children?: React.ReactNode;
-  /** Optional additional CSS classes */
   className?: string;
 }
 
@@ -102,7 +95,7 @@ export const Footer: React.FC<FooterProps> = ({
                     {FOOTER_NAVIGATION_ITEMS.map((item) => (
                       <li key={item.id}>
                         <Link
-                          to={item.path}
+                          href={item.path}
                           className="text-slate-400 hover:text-orange-400 transition-all duration-300 text-sm font-medium hover:translate-x-1 inline-block group"
                         >
                           <span className="group-hover:text-orange-400 transition-colors">→</span> {item.label}
@@ -132,7 +125,7 @@ export const Footer: React.FC<FooterProps> = ({
               <ul className="space-y-2">
                 <li>
                   <Link
-                    to="/contact"
+                    href="/contact"
                     className="text-slate-400 hover:text-green-400 transition-all duration-300 text-base font-medium hover:translate-x-2 inline-flex items-center space-x-2 group"
                   >
                     <Mail className="h-4 w-4 group-hover:text-green-400 transition-colors" />
@@ -150,7 +143,7 @@ export const Footer: React.FC<FooterProps> = ({
                 </li>
                 <li>
                   <Link
-                    to="/about"
+                    href="/about"
                     className="text-slate-400 hover:text-green-400 transition-all duration-300 text-base font-medium hover:translate-x-2 inline-flex items-center space-x-2 group"
                   >
                     <BookOpen className="h-4 w-4 group-hover:text-green-400 transition-colors" />

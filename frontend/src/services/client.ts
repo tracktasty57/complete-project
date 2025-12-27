@@ -1,5 +1,5 @@
 const getBaseUrl = () => {
-    const envUrl = import.meta.env.VITE_API_URL;
+    const envUrl = process.env.NEXT_PUBLIC_API_URL;
     if (envUrl && !envUrl.includes("your-backend-url")) {
         return envUrl;
     }

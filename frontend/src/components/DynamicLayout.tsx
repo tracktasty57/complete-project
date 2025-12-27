@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from 'react';
 import { Layout } from './layout';
 import type { LayoutComponentProps } from './layout/Layout';
@@ -6,9 +8,6 @@ interface DynamicLayoutProps extends Omit<LayoutComponentProps, 'headerProps'> {
     headerProps?: Omit<LayoutComponentProps['headerProps'], 'isAuthenticated'>;
 }
 
-/**
- * Layout wrapper that dynamically checks authentication status
- */
 export const DynamicLayout: React.FC<DynamicLayoutProps> = ({
     children,
     headerProps = {},
@@ -17,7 +16,6 @@ export const DynamicLayout: React.FC<DynamicLayoutProps> = ({
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
-        // Check authentication status on mount and when storage changes
         const checkAuth = () => {
             const token = localStorage.getItem('token');
             setIsAuthenticated(!!token);
@@ -25,10 +23,7 @@ export const DynamicLayout: React.FC<DynamicLayoutProps> = ({
 
         checkAuth();
 
-        // Listen for storage changes (e.g., login/logout in another tab)
         window.addEventListener('storage', checkAuth);
-
-        // Custom event for same-tab auth changes
         window.addEventListener('authChange', checkAuth);
 
         return () => {
@@ -51,3 +46,5 @@ export const DynamicLayout: React.FC<DynamicLayoutProps> = ({
         </Layout>
     );
 };
+
+export default DynamicLayout;
