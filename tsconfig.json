@@ -37,7 +37,7 @@
   ],
   "exclude": [
     "node_modules",
-    "frontend-react",
+    "legacy-react-app",
     "backend"
   ]
 }

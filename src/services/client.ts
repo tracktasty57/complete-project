@@ -24,10 +24,17 @@ export const fetchWithAuth = async (endpoint: string, options: RequestInit = {})
         headers,
     });
 
-    if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `API Error: ${response.statusText}`);
+    let responseData;
+    try {
+        const text = await response.text();
+        responseData = text ? JSON.parse(text) : {};
+    } catch (e) {
+        responseData = {};
     }
 
-    return response.json();
+    if (!response.ok) {
+        throw new Error(responseData.message || `API Error: ${response.status} ${response.statusText}`);
+    }
+
+    return responseData;
 };

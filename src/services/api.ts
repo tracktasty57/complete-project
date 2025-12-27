@@ -27,12 +27,19 @@ export const registerUser = async (data: RegisterData) => {
     body: JSON.stringify(data),
   });
 
-  if (!res.ok) {
-    const errorData = await res.json();
-    throw new Error(errorData.message || "Registration failed");
+  let responseData;
+  try {
+    const text = await res.text();
+    responseData = text ? JSON.parse(text) : {};
+  } catch (e) {
+    responseData = { message: "Invalid JSON response" };
   }
 
-  return res.json();
+  if (!res.ok) {
+    throw new Error(responseData.message || `Registration failed with status ${res.status}`);
+  }
+
+  return responseData;
 };
 
 export const loginUser = async (data: LoginData) => {
@@ -42,10 +49,17 @@ export const loginUser = async (data: LoginData) => {
     body: JSON.stringify(data),
   });
 
-  if (!res.ok) {
-    const errorData = await res.json();
-    throw new Error(errorData.message || "Login failed");
+  let responseData;
+  try {
+    const text = await res.text();
+    responseData = text ? JSON.parse(text) : {};
+  } catch (e) {
+    responseData = { message: "Invalid JSON response" };
   }
 
-  return res.json();
+  if (!res.ok) {
+    throw new Error(responseData.message || `Login failed with status ${res.status}`);
+  }
+
+  return responseData;
 };
