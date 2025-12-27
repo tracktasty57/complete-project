@@ -34,9 +34,22 @@ const mongoUri = process.env.MONGO_URI;
 if (mongoUri) {
   mongoose.connect(mongoUri)
     .then(() => console.log("🟢 MongoDB connected"))
-    .catch((err) => console.error("🔴 MongoDB connection error:", err));
+    .catch((err) => {
+      console.error("🔴 MongoDB connection error:", err);
+      // Log the error more clearly for the user
+      process.env.MONGO_CONN_ERROR = err.message;
+    });
 } else {
   console.warn("⚠️ MONGO_URI is missing. Backend may not work correctly.");
 }
+
+// Add a diagnostic route
+app.get("/api/diag", (req, res) => {
+  res.json({
+    status: mongoose.connection.readyState === 1 ? "Connected" : "Disconnected",
+    uri: process.env.MONGO_URI ? "Set (Hidden)" : "Not Set",
+    error: process.env.MONGO_CONN_ERROR || "None"
+  });
+});
 
 export default app;

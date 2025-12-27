@@ -6,19 +6,20 @@
         "build": "cd frontend && npm install && npm run build"
     },
     "dependencies": {
-        "express": "^5.1.0",
+        "axios": "^1.13.2",
+        "bcryptjs": "^3.0.3",
         "cors": "^2.8.5",
-        "mongoose": "^8.19.2",
         "dotenv": "^17.2.3",
+        "express": "^5.1.0",
         "jsonwebtoken": "^9.0.2",
-        "bcrypt": "^6.0.0",
-        "multer": "^2.0.2",
-        "axios": "^1.13.2"
+        "mongoose": "^8.19.2",
+        "multer": "^2.0.2"
     },
     "devDependencies": {
-        "@types/node": "^18.0.0",
-        "@types/express": "^5.0.0",
+        "@types/bcryptjs": "^2.4.6",
         "@types/cors": "^2.8.0",
+        "@types/express": "^5.0.0",
+        "@types/node": "^18.0.0",
         "typescript": "^5.0.0"
     }
 }
